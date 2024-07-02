@@ -1,0 +1,14 @@
+name: 'Terraform'
+
+on: 
+  workflow_dispatch:
+   inputs:
+        environments:
+            description: 'Environments to deploy (dev, prod)'
+            required: true
+            default: dev
+jobs:
+    terraform:
+        name: 'Terraform'
+        env:
+            
