@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "example" {
-  name     = "resources-dev"
+  name     = "test"
   location = "East US"
 }
 
@@ -43,18 +43,18 @@ resource "azurerm_postgresql_firewall_rule" "rule" {
   
 }
 
-resource "azurerm_service_plan" "example" {
-  name                = "example-app-service-plan-jjsv8889"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  sku_name            = "B1"
+resource "azurerm_service_plan" "asp" {
+  name                = "ASP-test-ab9a"
+  location            = azurerm_resource_group.asp.location
+  resource_group_name = azurerm_resource_group.asp.name
+  sku_name            = "F1"
   os_type             = "Linux"
   worker_count = 1
 
 }
 
 resource "azurerm_linux_web_app" "example" {
-  name                = "example-app-service-jjsv89"
+  name                = "countappinf"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
   service_plan_id     = azurerm_service_plan.example.id
