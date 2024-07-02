@@ -2,15 +2,15 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "example" {
+resource "azurerm_resource_group" "rg" {
   name     = "test"
   location = "East US"
 }
 
-resource "azurerm_postgresql_server" "example" {
+resource "azurerm_postgresql_server" "server" {
   name                = "examplepsqlserver"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 
   administrator_login          = "psqladminun"
   administrator_login_password = "H@Sh1CoR3!"
@@ -26,18 +26,18 @@ resource "azurerm_postgresql_server" "example" {
   ssl_enforcement_enabled = true
 }
 
-resource "azurerm_postgresql_database" "example" {
+resource "azurerm_postgresql_database" "db" {
   name                = "exampledb"
-  resource_group_name = azurerm_resource_group.example.name
-  server_name         = azurerm_postgresql_server.example.name
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_postgresql_server.server.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
 }
 
 resource "azurerm_postgresql_firewall_rule" "rule" {
     name= "azure"
-    resource_group_name = azurerm_resource_group.example.name
-    server_name = azurerm_postgresql_server.example.name
+    resource_group_name = azurerm_resource_group.rg.name
+    server_name = azurerm_postgresql_server.server.name
     start_ip_address = "0.0.0.0"
     end_ip_address = "0.0.0.0"
   
@@ -65,7 +65,7 @@ resource "azurerm_linux_web_app" "example" {
 
   site_config {
     application_stack {
-      docker_image_name = "sahurtado88/countapp:v1"
+      docker_image_name = "sahurtado88/countapp"
       docker_registry_url = "https://index.docker.io"
      
     }
