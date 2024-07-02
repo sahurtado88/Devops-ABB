@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: visitors
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/visitors
+    depends_on:
+      - db
+
+volumes:
+  db_data:
