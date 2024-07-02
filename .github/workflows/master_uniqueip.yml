@@ -48,4 +48,4 @@ jobs:
         app-name: 'uniqueip'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_d7e482f43fdf4e9a8defaec39b582e98 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5dacdbe8c0a043379082743070dd9d02 }}/sahurtado88/countapp:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.DOCKER_USERNAME }}/countapp:${{ github.sha }}'
