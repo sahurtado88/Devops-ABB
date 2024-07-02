@@ -16,7 +16,9 @@ jobs:
             ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
             ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
             ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-            ARM_ACCESS_KEY: ${{ secrets.ACCESS_KEY }}   
+            ARM_ACCESS_KEY: ${{ secrets.ACCESS_KEY }} 
+            POSTGRESUSER: ${{ secrets.PGUSER }} 
+            POSGRESPASS: ${{ secrets.PGPASS }}       
             ROOTH_PATH: '${{ github.workspace }}/infraestructure'
             TF_LOG: INFO
             TF_INPUT: false
