@@ -1,14 +1,61 @@
 name: 'Terraform'
 
-on: 
-  workflow_dispatch:
-   inputs:
-        environments:
-            description: 'Environments to deploy (dev, prod)'
+on:
+    workflow_dispatch:
+     inputs:
+        environment:
+            description: 'Environment to deploy (devel,stage,prod)'
             required: true
-            default: dev
+            default: 'devel'
+
 jobs:
     terraform:
         name: 'Terraform'
         env:
-            
+            ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+            ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
+            ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+            ARM_ACCESS_KEY: ${{ secrets.ACCESS_KEY }}   
+            ROOTH_PATH: '${{ github.workspace }}/infraestructure'
+            TF_LOG: INFO
+            TF_INPUT: false
+
+        runs-on: ubuntu-latest
+        environment: ${{ github.event.inputs.environment }}
+        defaults:
+            run:
+                shell: bash
+                working-directory: ${{env.ROOTH_PATH}}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: 'Setup Terraform'
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.7.5
+
+
+            - name: 'Terraform Init'
+              id: init
+              working-directory: ${{env.ROOTH_PATH}}
+              run: terraform init  
+
+            - name: 'Set workspace'
+              working-directory: ${{env.ROOTH_PATH}}
+              run: |
+                
+                terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new  ${{ github.event.inputs.environment }}        
+
+            - name: 'Terraform plan'
+              id: plan
+              env:
+                working-directory: ${{env.ROOTH_PATH}}  
+              run: terraform plan --var-file ${{ github.event.inputs.environment }}.tfvars
+
+            - name: 'Terraform Apply'
+              env:
+                working-directory: ${{env.ROOTH_PATH}}
+              run: terraform apply --var-file ${{ github.event.inputs.environment }}.tfvars -auto-approve 
+                         
