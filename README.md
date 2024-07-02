@@ -79,6 +79,9 @@ Briefly explain how you would monitor your application, and what system you woul
 To effectively monitor the application, the following strategies can be employed:
 
 Azure Monitor: Configure diagnostics, metrics, and logs for App Service and PostgreSQL.
+
 Application Insights: Integrate for deep monitoring of your App Service.
+
 Alerts: Set up alerts to be notified of issues in real-time, such as high CPU usage.
+
 Visualization: Create dashboards and alerts with Grafana.
